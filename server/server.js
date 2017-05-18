@@ -19,13 +19,15 @@ io.on('connection', (socket) => {
     console.log('user disconnected')
   })
 
-  socket.emit('newMessage', {
-    from: 'me',
-    text: 'newMessage',
-    createdAt: Date.now()
-  })
+  //when server gets a createMessage from client, it sends the message along
+  //to all the other users, adding the time
   socket.on('createMessage', (message) => {
     console.log('createMessage listener', message)
+    io.emit('newMessage', {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    })
   })
 
 })
