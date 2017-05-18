@@ -19,6 +19,18 @@ io.on('connection', (socket) => {
     console.log('user disconnected')
   })
 
+  socket.emit('newMessage', {
+    from: 'Admin',
+    text: 'Welcome to my chat app',
+    createdAt: new Date().getTime()
+
+  })
+  socket.broadcast.emit('newMessage', {
+    from: 'Admin',
+    text: 'new user has joined',
+    createdAt: new Date().getTime()
+  })
+
   //when server gets a createMessage from client, it sends the message along
   //to all the other users, adding the time
   socket.on('createMessage', (message) => {
@@ -28,6 +40,11 @@ io.on('connection', (socket) => {
       text: message.text,
       createdAt: new Date().getTime()
     })
+    // socket.broadcast.emit('newMessage', {
+    //   from: message.from,
+    //   text: message.text,
+    //   createdAt: new Date().getTime()
+    // })
   })
 
 })
