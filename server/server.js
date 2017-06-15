@@ -25,9 +25,11 @@ io.on('connection', (socket) => {
 
   //when server gets a createMessage from client, it sends the message along
   //to all the other users, adding the time
-  socket.on('createMessage', (message) => {
+  socket.on('createMessage', (message, callback) => {
     console.log('createMessage listener', message)
     io.emit('newMessage', makeMessage(message.from, message.text))
+    //lets us know that we got the message
+    callback('this is from the server')
     // socket.broadcast.emit('newMessage', {
     //   from: message.from,
     //   text: message.text,

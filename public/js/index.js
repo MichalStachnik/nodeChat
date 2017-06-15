@@ -14,4 +14,20 @@ socket.on('disconnect', function(){
 
 socket.on('newMessage', function(message){
   console.log('recieved newMessage', message)
+  var listItem = $('<li></li>')
+  listItem.text(`${message.from}: ${message.text}`)
+
+  $('#messageList').append(listItem)
+})
+
+
+$('#form').on('submit', function(e){
+  e.preventDefault()
+
+  socket.emit('createMessage', {
+    from: 'User',
+    text: $('#input').val()
+  }, function(){
+
+  })
 })
