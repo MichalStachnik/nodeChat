@@ -13,20 +13,38 @@ socket.on('disconnect', function(){
 })
 
 socket.on('newMessage', function(message){
-  console.log('recieved newMessage', message)
-  var listItem = $('<li></li>')
-  listItem.text(`${message.from}: ${message.text}`)
+  // console.log('recieved newMessage', message)
+  //
+  var formattedTime = moment(message.createdAt).format('h:mm a')
+  // var listItem = $('<li></li>')
+  // listItem.text(`${message.from} ${formattedTime}: ${message.text}`)
+  //
+  // $('#messageList').append(listItem)
 
-  $('#messageList').append(listItem)
+  var template = $('#message-template').html()
+  var html = Mustache.render(template, {
+    text: message.text,
+    from: message.from,
+    createdAt: formattedTime
+  })
+  $('#messageList').append(html)
 })
 
 socket.on('newLocationMessage', function(message){
-  var listItem = $('<li></li>')
-  var anchor = $('<a target="_blank">My location</a>')
-  listItem.text(`${message.from}: `)
-  anchor.attr('href', message.url)
-  listItem.append(anchor)
-  $('#messageList').append(listItem)
+  var formattedTime = moment(message.createdAt).format('h:mm a')
+  // var listItem = $('<li></li>')
+  // var anchor = $('<a target="_blank">My location</a>')
+  // listItem.text(`${message.from} ${formattedTime}: `)
+  // anchor.attr('href', message.url)
+  // listItem.append(anchor)
+  // $('#messageList').append(listItem)
+  var template = $('#location-template').html()
+  var html = Mustache.render(template, {
+    from: message.from,
+    createdAt: formattedTime,
+    url: message.url
+  })
+  $('#messageList').append(html)
 })
 
 $('#form').on('submit', function(e){
